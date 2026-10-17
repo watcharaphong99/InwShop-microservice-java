@@ -1,0 +1,13 @@
+name: Install inwza-api-contracts
+description: Build and install gRPC contracts into the local Maven repository
+inputs:
+  contracts-path:
+    description: Path to inwza-api-contracts checkout
+    required: false
+    default: inwza-api-contracts
+runs:
+  using: composite
+  steps:
+    - name: mvn install contracts
+      shell: bash
+      run: mvn -f "${{ inputs.contracts-path }}/pom.xml" -B install -DskipTests

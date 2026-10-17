@@ -1,0 +1,21 @@
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+.classpath
+.project
+.settings/
+
+# Java
+target/
+build/
+.gradle/
+*.class
+
+# Env
+.env
+.env.local
+
+# OS
+.DS_Store

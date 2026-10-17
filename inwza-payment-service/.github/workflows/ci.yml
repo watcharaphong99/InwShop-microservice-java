@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Checkout api-contracts
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ vars.INWZA_CONTRACTS_REPOSITORY || format('{0}/inwza-api-contracts', github.repository_owner) }}
+          path: inwza-api-contracts
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+      - run: mvn -f inwza-api-contracts -B install -DskipTests
+      - run: mvn -B test

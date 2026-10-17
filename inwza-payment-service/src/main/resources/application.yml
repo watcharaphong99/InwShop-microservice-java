@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: inwza-payment-service
+  profiles:
+    active: local
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: inwza-payment-service
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+
+server:
+  port: ${SERVER_PORT:8085}
+
+grpc:
+  client:
+    item:
+      address: ${GRPC_ITEM_ADDRESS:static://localhost:50052}
+      negotiationType: plaintext
+
+inwza:
+  jwt:
+    access-secret-key: ${JWT_ACCESS_SECRET_KEY:01234567890123456789012345678901}
+    api-secret-key: ${JWT_API_SECRET_KEY:01234567890123456789012345678903}
+  kafka:
+    player-topic: player
+    inventory-topic: inventory
+    payment-topic: payment
+  payment:
+    step-timeout-ms: 8000
+    workflow-stale-seconds: 45
+    workflow-recover-interval-ms: 60000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %5p [%X{correlationId}] --- %msg%n"

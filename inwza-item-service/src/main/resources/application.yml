@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: inwza-item-service
+  profiles:
+    active: local
+
+server:
+  port: ${SERVER_PORT:8082}
+
+grpc:
+  server:
+    port: ${GRPC_SERVER_PORT:50052}
+
+inwza:
+  paginate:
+    item-next-page-base-url: ${PAGINATE_ITEM_NEXT_PAGE_BASED_URL:http://localhost:8082/item_v1/item}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %5p [%X{correlationId}] --- %msg%n"

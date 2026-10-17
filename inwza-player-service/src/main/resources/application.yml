@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: inwza-player-service
+  profiles:
+    active: local
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: inwza-player-service
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+    producer:
+      acks: all
+
+server:
+  port: ${SERVER_PORT:8083}
+
+grpc:
+  server:
+    port: ${GRPC_SERVER_PORT:50053}
+
+inwza:
+  jwt:
+    access-secret-key: ${JWT_ACCESS_SECRET_KEY:01234567890123456789012345678901}
+    api-secret-key: ${JWT_API_SECRET_KEY:01234567890123456789012345678903}
+  kafka:
+    player-topic: player
+    payment-topic: payment
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %5p [%X{correlationId}] --- %msg%n"

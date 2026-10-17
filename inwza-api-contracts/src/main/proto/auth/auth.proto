@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package authpb;
+
+option java_package = "com.inwza.contracts.auth";
+option java_multiple_files = true;
+
+message AccessTokenSearchReq {
+  string accessToken = 1;
+}
+
+message AccessTokenSearchRes {
+  bool isValid = 1;
+}
+
+message RolesCountReq {}
+
+message RolesCountRes {
+  int64 count = 1;
+}
+
+service AuthGrpcService {
+  rpc AccessTokenSearch(AccessTokenSearchReq) returns (AccessTokenSearchRes);
+  rpc RolesCount(RolesCountReq) returns (RolesCountRes);
+}

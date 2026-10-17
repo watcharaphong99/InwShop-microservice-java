@@ -1,0 +1,22 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Payment Service" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <option name="ACTIVE_PROFILES" value="local" />
+    <envs>
+      <env name="DB_HOST" value="localhost" />
+      <env name="DB_NAME" value="inwza_payment" />
+      <env name="DB_PASSWORD" value="root" />
+      <env name="DB_PORT" value="5433" />
+      <env name="DB_USER" value="postgres" />
+      <env name="GRPC_ITEM_ADDRESS" value="static://localhost:50052" />
+      <env name="JWT_ACCESS_SECRET_KEY" value="01234567890123456789012345678901" />
+      <env name="JWT_API_SECRET_KEY" value="01234567890123456789012345678903" />
+      <env name="KAFKA_BOOTSTRAP_SERVERS" value="localhost:9092" />
+      <env name="SERVER_PORT" value="8085" />
+    </envs>
+    <module name="inwza-payment-service" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.inwza.payment.PaymentServiceApplication" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

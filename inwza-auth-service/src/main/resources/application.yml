@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: inwza-auth-service
+  profiles:
+    active: local
+
+server:
+  port: ${SERVER_PORT:8081}
+
+grpc:
+  server:
+    port: ${GRPC_SERVER_PORT:50051}
+  client:
+    player:
+      address: ${GRPC_PLAYER_ADDRESS:static://localhost:50053}
+      negotiationType: plaintext
+
+inwza:
+  jwt:
+    access-secret-key: ${JWT_ACCESS_SECRET_KEY:01234567890123456789012345678901}
+    refresh-secret-key: ${JWT_REFRESH_SECRET_KEY:01234567890123456789012345678902}
+    api-secret-key: ${JWT_API_SECRET_KEY:01234567890123456789012345678903}
+    access-duration-seconds: ${JWT_ACCESS_DURATION:3600}
+    refresh-duration-seconds: ${JWT_REFRESH_DURATION:604800}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %5p [%X{correlationId}] --- %msg%n"

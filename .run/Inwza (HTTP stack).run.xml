@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Inwza (HTTP stack)" type="CompoundRunConfigurationType">
+    <toRun name="Item Service" type="SpringBootApplicationConfigurationType" />
+    <toRun name="Player Service" type="SpringBootApplicationConfigurationType" />
+    <toRun name="Auth Service" type="SpringBootApplicationConfigurationType" />
+    <toRun name="Inventory Service" type="SpringBootApplicationConfigurationType" />
+    <toRun name="Payment Service" type="SpringBootApplicationConfigurationType" />
+    <method v="2" />
+  </configuration>
+</component>

@@ -1,0 +1,43 @@
+{
+  "info": {
+    "name": "Inwza local",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "authBase", "value": "http://localhost:8081/auth_v1" },
+    { "key": "accessToken", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth health",
+      "request": {
+        "method": "GET",
+        "url": "{{authBase}}"
+      }
+    },
+    {
+      "name": "Login (player001)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const c = pm.response.json().credential;",
+              "if (c && c.access_token) pm.collectionVariables.set('accessToken', c.access_token);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"player001@Iwpshop.com\",\n  \"password\": \"123456\"\n}"
+        },
+        "url": "{{authBase}}/auth/login"
+      }
+    }
+  ]
+}

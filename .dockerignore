@@ -1,0 +1,8 @@
+**/.git
+**/.idea
+**/.vscode
+**/target
+**/.env
+**/*.iml
+**/node_modules
+inwza-e2e-tests/target

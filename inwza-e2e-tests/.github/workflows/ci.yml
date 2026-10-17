@@ -1,0 +1,35 @@
+name: CI
+
+# Prefer the monorepo workflow at inwza/.github/workflows/ci.yml when all projects live in one repo.
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout e2e tests
+        uses: actions/checkout@v4
+        with:
+          path: stack/inwza-e2e-tests
+      - name: Checkout sibling repositories
+        env:
+          OWNER: ${{ vars.INWZA_GITHUB_OWNER || github.repository_owner }}
+        run: |
+          set -euo pipefail
+          base="stack"
+          for repo in inwza-api-contracts inwza-auth-service inwza-item-service inwza-player-service inwza-inventory-service inwza-payment-service; do
+            git clone --depth 1 "https://github.com/${OWNER}/${repo}.git" "${base}/${repo}"
+          done
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+      - name: E2E verify
+        working-directory: stack/inwza-e2e-tests
+        run: mvn -B verify

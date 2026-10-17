@@ -1,0 +1,102 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contracts:
+    name: api-contracts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+      - name: Build contracts
+        run: mvn -f inwza-api-contracts -B clean install
+
+  test-services:
+    name: test-${{ matrix.service }}
+    needs: contracts
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        service:
+          - auth
+          - item
+          - player
+          - inventory
+          - payment
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+      - uses: ./.github/actions/install-contracts
+      - name: Unit tests
+        run: mvn -f inwza-${{ matrix.service }}-service -B test
+
+  e2e:
+    name: e2e-buy-sell
+    needs: contracts
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+      - uses: ./.github/actions/install-contracts
+      - name: E2E verify
+        run: mvn -f inwza-e2e-tests -B verify
+
+  docker:
+    name: docker-${{ matrix.service }}
+    needs: test-services
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    strategy:
+      fail-fast: false
+      matrix:
+        service:
+          - auth
+          - item
+          - player
+          - inventory
+          - payment
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: inwza-${{ matrix.service }}-service/Dockerfile
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/inwza-${{ matrix.service }}-service:${{ github.sha }}
+            ghcr.io/${{ github.repository_owner }}/inwza-${{ matrix.service }}-service:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

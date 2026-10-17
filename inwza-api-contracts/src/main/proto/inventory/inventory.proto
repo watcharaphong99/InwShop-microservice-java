@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package inventorypb;
+
+option java_package = "com.inwza.contracts.inventory";
+option java_multiple_files = true;
+
+message IsAvailableToSellReq {
+  string playerId = 1;
+  string itemId = 2;
+}
+
+message IsAvailableToSellRes {
+  bool isAvailable = 1;
+}
+
+service InventoryGrpcService {
+  rpc IsAvailableToSell(IsAvailableToSellReq) returns (IsAvailableToSellRes);
+}

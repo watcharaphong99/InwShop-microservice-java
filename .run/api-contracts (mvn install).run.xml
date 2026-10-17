@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="api-contracts (mvn install)" type="MavenRunConfiguration" factoryName="Maven">
+    <MavenSettings>
+      <option name="myGeneralSettings" />
+    </MavenSettings>
+    <option name="commandLine" value="install -DskipTests" />
+    <option name="workingDirPath" value="$PROJECT_DIR$/inwza-api-contracts" />
+    <method v="2" />
+  </configuration>
+</component>
